@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import datetime
+import json
 import feedparser
 import requests
 
@@ -32,6 +33,33 @@ def clean_html(text: str) -> str:
     text = re.sub(r"<[^>]+>", "", text)
     text = re.sub(r"\s+", " ", text)
     return text.strip()
+
+def search_github_poc(cve_id: str) -> list:
+    """Searches GitHub for public PoC repositories of a specific CVE."""
+    token = os.environ.get("GITHUB_TOKEN", "").strip()
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    if token:
+        headers["Authorization"] = f"token {token}"
+        
+    url = f"https://api.github.com/search/repositories?q={cve_id}&sort=stars&order=desc"
+    pocs = []
+    try:
+        response = requests.get(url, headers=headers, timeout=10)
+        if response.status_code == 200:
+            items = response.json().get("items", [])
+            for item in items[:2]: # Get top 2
+                pocs.append({
+                    "name": item.get("full_name"),
+                    "url": item.get("html_url"),
+                    "description": item.get("description") or "No description provided.",
+                    "stars": item.get("stargazers_count")
+                })
+            print(f"[SUCCESS] Found {len(pocs)} public PoCs for {cve_id} on GitHub")
+        else:
+            print(f"[WARN] GitHub search status code: {response.status_code}")
+    except Exception as e:
+        print(f"[WARN] Error searching GitHub for PoCs: {e}")
+    return pocs
 
 def fetch_latest_news() -> dict:
     """Fetches the latest article across all configured RSS feeds."""
@@ -68,7 +96,7 @@ def fetch_latest_news() -> dict:
     print(f"[SUCCESS] Fetched {len(all_articles)} articles.")
     return all_articles[0]
 
-def get_template_post(article: dict) -> str:
+def get_template_post(article: dict, cve_id: str = None, pocs: list = None) -> str:
     """Fallback generator using static templates based on article contents."""
     title = article["title"]
     summary = article["summary"]
@@ -93,7 +121,7 @@ def get_template_post(article: dict) -> str:
             "**Labs to Build:** Set up a virtualized Active Directory forest in a closed sandbox. Use tools like PingCastle or BloodHound to audit it, "
             "identify misconfigurations, and learn how ransomware groups perform internal reconnaissance and privilege escalation."
         )
-    elif any(k in content_lower for k in ["cve", "vulnerability", "zero-day", "flaw", "exploit", "patch"]):
+    elif any(k in content_lower for k in ["cve", "vulnerability", "zero-day", "flaw", "exploit", "patch"]) or cve_id:
         category = "Vulnerability Management & Exploitation"
         defense_steps = [
             "Perform an asset discovery scan to map out all servers running the affected software version.",
@@ -152,6 +180,15 @@ def get_template_post(article: dict) -> str:
         
     defense_str = "\n".join([f"- [ ] **Step {i+1}**: {step}" for i, step in enumerate(defense_steps)])
     
+    poc_section = ""
+    if cve_id and pocs:
+        poc_list = "\n".join([f"- **[{p['name']}]({p['url']})** (⭐ {p['stars']}): {p['description']}" for p in pocs])
+        poc_section = f"""
+
+## 🎯 Public Exploit PoC Alert
+We detected active public Proof-of-Concept exploits for **{cve_id}** on GitHub:
+{poc_list}"""
+    
     post_content = f"""# 🚨 {title}
 
 **Source**: {source}
@@ -162,7 +199,7 @@ def get_template_post(article: dict) -> str:
 ## 📰 Summary of the Threat
 {summary}
 
-This vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.
+This vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.{poc_section}
 
 ## 🛠️ Actionable Defense & Mitigation Checklist
 {defense_str}
@@ -175,7 +212,7 @@ This vulnerability or active incident represents a significant risk vector. Orga
 """
     return post_content
 
-def call_groq_llm(article: dict) -> str:
+def call_groq_llm(article: dict, cve_id: str = None, pocs: list = None) -> str:
     """Uses Groq API to generate a highly detailed and custom cybersecurity news/career post."""
     api_key = os.environ.get("GROQ_API_KEY", "").strip()
     if not api_key:
@@ -210,7 +247,19 @@ Generate a detailed, markdown-formatted daily report. The report MUST follow thi
 
 ## 📰 Summary of the Threat
 Provide a deep, 2-3 paragraph summary explaining what the threat is, who is targeted, and the technical mechanism of the vulnerability or attack. Keep the tone professional, technical, and direct.
+"""
 
+    if cve_id and pocs:
+        poc_list_str = "\n".join([f"- {p['name']} ({p['url']}) with {p['stars']} stars. Description: {p['description']}" for p in pocs])
+        prompt += f"""
+CRITICAL CVE INFO:
+We detected {cve_id} in this story. The following public PoC exploits are available on GitHub:
+{poc_list_str}
+
+You MUST include a dedicated '## 🎯 Public Exploit PoC Alert' section in your response right below the summary, listing these repositories and warning readers about active exploit tools.
+"""
+
+    prompt += """
 ## 🛠️ Actionable Defense & Mitigation Checklist
 Provide 3-5 highly technical, concrete, and specific steps that security teams, developers, or system administrators can take to defend against or remediate this specific threat. Do not use generic advice like "be vigilant". Use specific controls, configuration actions, or auditing methods.
 
@@ -232,23 +281,115 @@ Do not include any chat preamble, closing remarks, or metadata blocks. Return ON
         print(f"[WARN] Groq API call failed: {e}. Falling back to template mode.")
         return None
 
+def update_readme_with_alert(article: dict, date_str: str):
+    """Updates the repository README.md between marker comments with latest news info."""
+    readme_path = "README.md"
+    if not os.path.exists(readme_path):
+        print("[WARN] README.md not found. Skipping auto-update.")
+        return
+        
+    try:
+        with open(readme_path, "r", encoding="utf-8") as f:
+            content = f.read()
+            
+        start_marker = "<!-- CYBER_ALERT_START -->"
+        end_marker = "<!-- CYBER_ALERT_END -->"
+        
+        start_idx = content.find(start_marker)
+        end_idx = content.find(end_marker)
+        
+        if start_idx == -1 or end_idx == -1:
+            print("[INFO] Cyber Alert markers not found in README.md. Skipping auto-update.")
+            return
+            
+        # Format the alert markdown
+        alert_content = f"""{start_marker}
+> [!WARNING]
+> **Latest Cybersecurity Alert ({date_str}):**
+> **[{article['title']}]({article['link']})** (Source: *{article['source']}*)
+>
+> A detailed breakdown, including security engineering mitigation steps and career skill-building exercises, has been posted in [news/{date_str}-news.md](news/{date_str}-news.md). Check the [Threat Intel Dashboard](index.html) for interactive updates!
+{end_marker}"""
+          
+        new_content = content[:start_idx] + alert_content + content[end_idx + len(end_marker):]
+        
+        with open(readme_path, "w", encoding="utf-8") as f:
+            f.write(new_content)
+        print("[SUCCESS] Successfully updated README.md with latest alert.")
+    except Exception as e:
+        print(f"[ERROR] Failed to update README.md: {e}")
+
+def update_news_json(article: dict, post_content: str, date_str: str, pocs: list):
+    """Updates news_data.json with the latest entry, keeping up to 15 entries."""
+    json_path = "news_data.json"
+    entries = []
+    if os.path.exists(json_path):
+        try:
+            with open(json_path, "r", encoding="utf-8") as f:
+                entries = json.load(f)
+        except Exception:
+            entries = []
+            
+    # Extract Category if present in post_content
+    category = "General Cyber Security"
+    cat_match = re.search(r"\*\*Category\*\*:\s*([^\n]+)", post_content)
+    if cat_match:
+        category = cat_match.group(1).strip()
+    
+    # Create new entry
+    new_entry = {
+        "title": article["title"],
+        "source": article["source"],
+        "link": article["link"],
+        "date": date_str,
+        "category": category,
+        "content": post_content,
+        "pocs": pocs
+    }
+    
+    # Avoid duplicates by date
+    entries = [e for e in entries if e["date"] != date_str]
+    entries.insert(0, new_entry)
+    
+    # Keep up to 15 entries
+    entries = entries[:15]
+    
+    try:
+        with open(json_path, "w", encoding="utf-8") as f:
+            json.dump(entries, f, indent=2, ensure_ascii=False)
+        print(f"[SUCCESS] Updated news_data.json with {len(entries)} entries")
+    except Exception as e:
+        print(f"[ERROR] Failed to write news_data.json: {e}")
+
 def main():
     article = fetch_latest_news()
     if not article:
         sys.exit(1)
         
+    title = article["title"]
+    summary = article["summary"]
+    date_str = datetime.date.today().strftime("%Y-%m-%d")
+    
+    # Check for CVE
+    cves = re.findall(r"CVE-\d{4}-\d{4,}", title + " " + summary)
+    pocs = []
+    cve_id = None
+    if cves:
+        cve_id = list(set(cves))[0] # unique CVE
+        print(f"[INFO] Detected CVE: {cve_id}. Searching GitHub for public PoC exploits...")
+        pocs = search_github_poc(cve_id)
+        
     # Try LLM generation first
-    post_content = call_groq_llm(article)
+    post_content = call_groq_llm(article, cve_id, pocs)
     
     # Fall back to template-based generation if LLM failed/disabled
     if not post_content:
         print("[INFO] Generating post using template fallback...")
-        post_content = get_template_post(article)
+        post_content = get_template_post(article, cve_id, pocs)
         
     # Save the output file
-    today_str = datetime.date.today().strftime("%Y-%m-%d")
     os.makedirs("news", exist_ok=True)
-    filename = f"news/{today_str}-news.md"
+    filename = f"news/{date_str}-news.md"
     
     try:
         with open(filename, "w", encoding="utf-8") as f:
@@ -257,6 +398,12 @@ def main():
     except Exception as e:
         print(f"[ERROR] Failed to write news file: {e}")
         sys.exit(1)
+        
+    # Update local README.md alert section
+    update_readme_with_alert(article, date_str)
+    
+    # Update news_data.json
+    update_news_json(article, post_content, date_str, pocs)
 
 if __name__ == "__main__":
     main()

@@ -30,6 +30,7 @@ jobs:
       - name: Fetch news and generate post
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/generate_daily_post.py
 
       - name: Commit and push changes
@@ -37,12 +38,14 @@ jobs:
           git config --global user.name "rajshevde-01"
           git config --global user.email "rajshevde009@gmail.com"
           
-          # Check if there are any changes (new files in news/)
-          if [ -n "$(git status --porcelain news/)" ]; then
-            git add news/
+          # Stage all modified files (news, json index, index.html, README)
+          git add news/ news_data.json index.html README.md
+          
+          # Check if there are changes staged for commit
+          if ! git diff --cached --quiet; then
             git commit -m "docs: add daily cybersecurity update for $(date +'%Y-%m-%d')"
             git push
-            echo "[SUCCESS] Committed and pushed daily news."
+            echo "[SUCCESS] Committed and pushed daily news and dashboard updates."
           else
-            echo "[INFO] No new news file created today (or file already exists)."
+            echo "[INFO] No changes detected. Skipping commit."
           fi

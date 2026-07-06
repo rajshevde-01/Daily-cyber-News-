@@ -4,6 +4,14 @@ A fully automated, zero-maintenance system that fetches real-world cybersecurity
 
 By running under your Git identity, this system automatically maintains your GitHub contribution graph ("green squares") daily.
 
+<!-- CYBER_ALERT_START -->
+> [!WARNING]
+> **Latest Cybersecurity Alert (2026-07-06):**
+> **[Flipper Zero firmware development continues with community help](https://www.bleepingcomputer.com/news/security/flipper-zero-firmware-development-continues-with-community-help/)** (Source: *BleepingComputer*)
+>
+> A detailed breakdown, including security engineering mitigation steps and career skill-building exercises, has been posted in [news/2026-07-06-news.md](news/2026-07-06-news.md). Check the [Threat Intel Dashboard](index.html) for interactive updates!
+<!-- CYBER_ALERT_END -->
+
 ## 🚀 How It Works
 1. **Fetch**: A Python script runs daily inside GitHub Actions. It scans top-tier cybersecurity RSS feeds (CISA Alerts, BleepingComputer, The Hacker News, Dark Reading) for authentic, live stories.
 2. **Generate**: The script compiles the latest story. If you configure a Groq API key, it generates highly custom technical breakdowns and tailored cybersecurity career exercises. Otherwise, it falls back to built-in keyword-mapped templates (for Ransomware, Cloud, Credential/Phishing, CVEs, etc.) requiring zero API keys.

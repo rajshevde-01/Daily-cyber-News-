@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Threat Intelligence Dashboard</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Marked.js Markdown Parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
+  <style>
+    :root {
+      --bg-base: #06080b;
+      --bg-panel: #0d1117;
+      --bg-card: #121820;
+      --border-dim: #1e2633;
+      --border-accent: #3b4b66;
+      --accent-gold: #d97706;
+      --accent-gold-hover: #f59e0b;
+      --accent-gold-transparent: rgba(217, 119, 6, 0.08);
+      --accent-gold-border: rgba(217, 119, 6, 0.25);
+      
+      --text-main: #e2e8f0;
+      --text-sub: #94a3b8;
+      --text-muted: #475569;
+      --text-gold: #fbbf24;
+      
+      --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-base);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-dim);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--border-accent);
+    }
+
+    /* Layout Container */
+    .dashboard-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    /* Premium Header */
+    header {
+      border-bottom: 1px solid var(--border-dim);
+      padding-bottom: 2rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .brand-section h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-section h1::before {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent-gold);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--accent-gold);
+      animation: pulse 2s infinite;
+    }
+
+    .brand-section p {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+      font-weight: 300;
+    }
+
+    .meta-status {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border: 1px dashed var(--border-dim);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      background: rgba(13, 17, 23, 0.3);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 16px var(--accent-gold-hover); }
+      100% { transform: scale(0.9); opacity: 0.6; }
+    }
+
+    /* Controls: Search and Filters */
+    .controls-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-dim);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-wrapper {
+      flex: 2;
+      min-width: 280px;
+      position: relative;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+      background: var(--bg-base);
+      border: 1px solid var(--border-dim);
+      border-radius: 8px;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .search-wrapper input:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 2px var(--accent-gold-transparent);
+    }
+
+    .search-wrapper::before {
+      content: '🔍';
+      position: absolute;
+      left: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.9rem;
+      opacity: 0.5;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 0.75rem;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .filter-group select {
+      flex: 1;
+      background: var(--bg-base);
+      border: 1px solid var(--border-dim);
+      border-radius: 8px;
+      padding: 0.75rem;
+      color: var(--text-main);
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition-smooth);
+    }
+
+    .filter-group select:focus {
+      border-color: var(--accent-gold);
+    }
+
+    /* Grid Layout */
+    .threat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 480px) {
+      .threat-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Threat Cards */
+    .threat-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-dim);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .threat-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: transparent;
+      transition: var(--transition-smooth);
+    }
+
+    .threat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-accent);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .threat-card:hover::after {
+      background: var(--accent-gold);
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .card-category {
+      border: 1px solid var(--accent-gold-border);
+      background: var(--accent-gold-transparent);
+      color: var(--text-gold);
+      padding: 0.15rem 0.6rem;
+      border-radius: 100px;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    .card-date {
+      color: var(--text-muted);
+    }
+
+    .card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-summary {
+      color: var(--text-sub);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-weight: 300;
+    }
+
+    .card-footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+      padding-top: 0.75rem;
+    }
+
+    .card-source {
+      color: var(--text-muted);
+    }
+
+    .poc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      border: 1px dashed rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      animation: alertGlow 2.5s infinite;
+    }
+
+    @keyframes alertGlow {
+      0% { opacity: 0.8; }
+      50% { opacity: 1; border-color: rgba(245, 158, 11, 0.8); background: rgba(245, 158, 11, 0.05); }
+      100% { opacity: 0.8; }
+    }
+
+    /* Error and Empty States */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--bg-panel);
+      border: 1px dashed var(--border-dim);
+      border-radius: 12px;
+      color: var(--text-sub);
+    }
+
+    /* Premium Drawer Detail View */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition-smooth);
+    }
+
+    .drawer-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .detail-drawer {
+      position: fixed;
+      top: 0;
+      right: -600px;
+      width: 600px;
+      max-width: 95%;
+      height: 100%;
+      background: var(--bg-panel);
+      border-left: 1px solid var(--border-dim);
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+      z-index: 1001;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .drawer-overlay.active + .detail-drawer {
+      transform: translateX(-600px);
+    }
+
+    .drawer-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .drawer-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      color: var(--text-gold);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-sub);
+      font-size: 1.5rem;
+      cursor: pointer;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .close-btn:hover {
+      color: #fff;
+    }
+
+    .drawer-content {
+      padding: 2rem 1.5rem;
+      overflow-y: auto;
+      flex: 1;
+      font-size: 0.95rem;
+      font-weight: 300;
+    }
+
+    /* Markdown styling inside drawer */
+    .markdown-body h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      margin-bottom: 1.25rem;
+      color: #fff;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .markdown-body h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text-gold);
+      border-bottom: 1px solid var(--border-dim);
+      padding-bottom: 0.4rem;
+      font-weight: 500;
+    }
+
+    .markdown-body p {
+      margin-bottom: 1.25rem;
+      color: var(--text-sub);
+      line-height: 1.65;
+    }
+
+    .markdown-body ul, .markdown-body ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.25rem;
+      color: var(--text-sub);
+    }
+
+    .markdown-body li {
+      margin-bottom: 0.5rem;
+    }
+
+    .markdown-body blockquote {
+      border-left: 4px solid var(--accent-gold);
+      background: var(--accent-gold-transparent);
+      padding: 0.75rem 1rem;
+      margin: 1.5rem 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .markdown-body a {
+      color: var(--accent-gold-hover);
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    .markdown-body a:hover {
+      text-decoration: underline;
+    }
+
+    .markdown-body hr {
+      border: 0;
+      height: 1px;
+      background: var(--border-dim);
+      margin: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-container">
+    <header>
+      <div class="brand-section">
+        <h1>Threat Intelligence</h1>
+        <p>Real-time cybersecurity advisories, mitigation checklists, and skills upgrade paths.</p>
+      </div>
+      <div class="meta-status" id="last-updated">Status: Fetching logs...</div>
+    </header>
+
+    <!-- Controls Panel -->
+    <div class="controls-panel">
+      <div class="search-wrapper">
+        <input type="text" id="search-bar" placeholder="Search threats, vulnerabilities, or techniques...">
+      </div>
+      <div class="filter-group">
+        <select id="category-filter">
+          <option value="">All Categories</option>
+          <option value="Ransomware & Malware Defense">Ransomware & Malware</option>
+          <option value="Vulnerability Management & Exploitation">Vulnerabilities (CVE)</option>
+          <option value="Social Engineering & Identity Security">Social Engineering & Identity</option>
+          <option value="Cloud & Infrastructure Security">Cloud & Infrastructure</option>
+          <option value="General Cyber Security">General Security</option>
+        </select>
+        
+        <select id="source-filter">
+          <option value="">All Sources</option>
+          <option value="BleepingComputer">BleepingComputer</option>
+          <option value="The Hacker News">The Hacker News</option>
+          <option value="Dark Reading">Dark Reading</option>
+          <option value="CISA Alert/Activity">CISA Alerts</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Threats Grid -->
+    <div class="threat-grid" id="threat-cards-container">
+      <div class="empty-state">Loading threat feeds...</div>
+    </div>
+  </div>
+
+  <!-- Detail Drawer Overlay -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <!-- Detail Drawer -->
+  <div class="detail-drawer" id="detail-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title" id="drawer-cat-label">Threat Details</div>
+      <button class="close-btn" id="close-drawer-btn">&times;</button>
+    </div>
+    <div class="drawer-content markdown-body" id="drawer-body">
+      <!-- Dynamically Rendered Markdown Content -->
+    </div>
+  </div>
+
+  <script>
+    let threatData = [];
+
+    // Elements
+    const gridContainer = document.getElementById('threat-cards-container');
+    const searchBar = document.getElementById('search-bar');
+    const catFilter = document.getElementById('category-filter');
+    const srcFilter = document.getElementById('source-filter');
+    const lastUpdated = document.getElementById('last-updated');
+    
+    const overlay = document.getElementById('drawer-overlay');
+    const drawer = document.getElementById('detail-drawer');
+    const drawerBody = document.getElementById('drawer-body');
+    const drawerCatLabel = document.getElementById('drawer-cat-label');
+    const closeDrawerBtn = document.getElementById('close-drawer-btn');
+
+    // Fetch and Initialize Data
+    async function loadDashboardData() {
+      try {
+        const response = await fetch('news_data.json');
+        if (!response.ok) throw new Error('Data file not found');
+        threatData = await response.json();
+        
+        if (threatData.length > 0) {
+          lastUpdated.textContent = `Latest update: ${threatData[0].date}`;
+        } else {
+          lastUpdated.textContent = 'No records available';
+        }
+        
+        renderCards(threatData);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        gridContainer.innerHTML = `
+          <div class="empty-state">
+            <p style="color: #ef4444; font-weight: 500;">Failed to load Threat Intel feeds.</p>
+            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: var(--text-sub);">
+              Please verify that 'news_data.json' has been generated and pushed to your repository.
+            </p>
+          </div>
+        `;
+      }
+    }
+
+    // Render Cards in Grid
+    function renderCards(data) {
+      gridContainer.innerHTML = '';
+      if (data.length === 0) {
+        gridContainer.innerHTML = '<div class="empty-state">No threats match your current search parameters.</div>';
+        return;
+      }
+
+      data.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'threat-card';
+        card.addEventListener('click', () => openDetailDrawer(item));
+
+        const hasPoc = item.pocs && item.pocs.length > 0;
+        const pocBadgeHtml = hasPoc ? `<span class="poc-badge">⚠️ Exploit PoC</span>` : '';
+
+        // Extract description teaser
+        const summaryTeaser = item.summary || 'Click to view the detailed threat investigation...';
+
+        card.innerHTML = `
+          <div class="card-meta">
+            <span class="card-category">${item.category || 'General Security'}</span>
+            <span class="card-date">${item.date}</span>
+          </div>
+          <h2 class="card-title">${item.title}</h2>
+          <p class="card-summary">${summaryTeaser}</p>
+          <div class="card-footer">
+            <span class="card-source">${item.source}</span>
+            ${pocBadgeHtml}
+          </div>
+        `;
+        gridContainer.appendChild(card);
+      });
+    }
+
+    // Filter Logic
+    function applyFilters() {
+      const searchVal = searchBar.value.toLowerCase().strip();
+      const catVal = catFilter.value;
+      const srcVal = srcFilter.value;
+
+      const filtered = threatData.filter(item => {
+        const matchesSearch = 
+          item.title.toLowerCase().includes(searchVal) || 
+          (item.summary && item.summary.toLowerCase().includes(searchVal)) ||
+          item.content.toLowerCase().includes(searchVal);
+          
+        const matchesCat = !catVal || item.category === catVal;
+        const matchesSrc = !srcVal || item.source === srcVal;
+
+        return matchesSearch && matchesCat && matchesSrc;
+      });
+
+      renderCards(filtered);
+    }
+
+    // Helper for strings
+    if (!String.prototype.strip) {
+      String.prototype.strip = function () {
+        return this.replace(/^\s+|\s+$/g, '');
+      };
+    }
+
+    // Drawer Controls
+    function openDetailDrawer(item) {
+      drawerCatLabel.textContent = item.category || 'Threat Briefing';
+      // Use marked.js to render the markdown description
+      drawerBody.innerHTML = marked.parse(item.content);
+      
+      overlay.classList.add('active');
+      drawer.style.transform = 'translateX(-600px)';
+    }
+
+    function closeDetailDrawer() {
+      overlay.classList.remove('active');
+      drawer.style.transform = 'translateX(0)';
+    }
+
+    // Listeners
+    searchBar.addEventListener('input', applyFilters);
+    catFilter.addEventListener('change', applyFilters);
+    srcFilter.addEventListener('change', applyFilters);
+    
+    closeDrawerBtn.addEventListener('click', closeDetailDrawer);
+    overlay.addEventListener('click', closeDetailDrawer);
+
+    // Initial Load
+    loadDashboardData();
+  </script>
+</body>
+</html>
