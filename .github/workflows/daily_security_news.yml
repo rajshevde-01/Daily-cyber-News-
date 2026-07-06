@@ -1,0 +1,48 @@
+name: Daily Cybersecurity News Committer
+
+on:
+  schedule:
+    - cron: "0 9 * * *" # Runs daily at 9:00 AM UTC (2:30 PM IST)
+  workflow_dispatch: # Allows manual run from the GitHub Actions UI
+
+permissions:
+  contents: write # Required to allow pushing changes back to the repository
+
+jobs:
+  commit-news:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Fetch news and generate post
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python scripts/generate_daily_post.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "rajshevde-01"
+          git config --global user.email "rajshevde009@gmail.com"
+          
+          # Check if there are any changes (new files in news/)
+          if [ -n "$(git status --porcelain news/)" ]; then
+            git add news/
+            git commit -m "docs: add daily cybersecurity update for $(date +'%Y-%m-%d')"
+            git push
+            echo "[SUCCESS] Committed and pushed daily news."
+          else
+            echo "[INFO] No new news file created today (or file already exists)."
+          fi
