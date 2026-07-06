@@ -5,6 +5,12 @@ import datetime
 import feedparser
 import requests
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # Fix console encoding for Windows to handle Unicode icons correctly
 if sys.platform == "win32":
     import io
