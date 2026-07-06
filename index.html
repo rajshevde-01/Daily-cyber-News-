@@ -10,6 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <!-- Marked.js Markdown Parser -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <style>
     :root {
@@ -123,6 +125,56 @@
       0% { transform: scale(0.9); opacity: 0.6; }
       50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 16px var(--accent-gold-hover); }
       100% { transform: scale(0.9); opacity: 0.6; }
+    }
+
+    /* Collapsible Analytics Section */
+    .analytics-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-dim);
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .analytics-header {
+      padding: 1.25rem;
+      background: rgba(255, 255, 255, 0.01);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      border-bottom: 1px solid var(--border-dim);
+      user-select: none;
+      transition: var(--transition-smooth);
+    }
+
+    .analytics-header:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .analytics-body {
+      padding: 1.5rem;
+      transition: var(--transition-smooth);
+      max-height: 400px;
+      opacity: 1;
+    }
+
+    .analytics-body.collapsed {
+      max-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      opacity: 0;
+      border-bottom: none;
+      pointer-events: none;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 250px;
+      width: 100%;
     }
 
     /* Controls: Search and Filters */
@@ -491,6 +543,19 @@
       <div class="meta-status" id="last-updated">Status: Fetching logs...</div>
     </header>
 
+    <!-- Analytics Dashboard Card -->
+    <div class="analytics-card">
+      <div class="analytics-header" onclick="toggleAnalytics()">
+        <span>📊 Threat Analytics Overview (Recent Alerts)</span>
+        <span id="analytics-toggle-icon">▼</span>
+      </div>
+      <div class="analytics-body" id="analytics-body">
+        <div class="chart-container">
+          <canvas id="threatChart"></canvas>
+        </div>
+      </div>
+    </div>
+
     <!-- Controls Panel -->
     <div class="controls-panel">
       <div class="search-wrapper">
@@ -537,6 +602,7 @@
 
   <script>
     let threatData = [];
+    let myChart = null;
 
     // Elements
     const gridContainer = document.getElementById('threat-cards-container');
@@ -565,6 +631,7 @@
         }
         
         renderCards(threatData);
+        renderAnalyticsChart(threatData);
       } catch (err) {
         console.error('Error fetching data:', err);
         gridContainer.innerHTML = `
@@ -576,6 +643,96 @@
           </div>
         `;
       }
+    }
+
+    // Toggle Collapsible Analytics Panel
+    function toggleAnalytics() {
+      const body = document.getElementById('analytics-body');
+      const icon = document.getElementById('analytics-toggle-icon');
+      body.classList.toggle('collapsed');
+      if (body.classList.contains('collapsed')) {
+        icon.textContent = '▲';
+      } else {
+        icon.textContent = '▼';
+        // Re-render chart to replay animations smoothly
+        renderAnalyticsChart(threatData);
+      }
+    }
+
+    // Render Chart.js Analytics
+    function renderAnalyticsChart(data) {
+      const ctx = document.getElementById('threatChart').getContext('2d');
+      
+      const categories = [
+        "Ransomware & Malware Defense",
+        "Vulnerability Management & Exploitation",
+        "Social Engineering & Identity Security",
+        "Cloud & Infrastructure Security",
+        "General Cyber Security"
+      ];
+      
+      const counts = categories.map(cat => data.filter(item => item.category === cat).length);
+      
+      if (myChart) {
+        myChart.destroy();
+      }
+      
+      myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ["Ransomware & Malware", "Vulnerabilities (CVE)", "Identity & Phishing", "Cloud Security", "General Security"],
+          datasets: [{
+            label: 'Alert Counts',
+            data: counts,
+            backgroundColor: 'rgba(217, 119, 6, 0.15)',
+            borderColor: '#d97706',
+            borderWidth: 1.5,
+            hoverBackgroundColor: 'rgba(245, 158, 11, 0.25)',
+            hoverBorderColor: '#f59e0b',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: 'y', // Horizontal Layout
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: '#0d1117',
+              titleFont: { family: 'Outfit', size: 13 },
+              bodyFont: { family: 'Outfit', size: 12 },
+              borderColor: '#1e2633',
+              borderWidth: 1,
+              displayColors: false
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: 'rgba(255, 255, 255, 0.04)',
+                borderColor: 'rgba(255, 255, 255, 0.04)'
+              },
+              ticks: {
+                color: '#94a3b8',
+                font: { family: 'Outfit', size: 11 },
+                stepSize: 1
+              }
+            },
+            y: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                color: '#e2e8f0',
+                font: { family: 'Space Grotesk', size: 12 }
+              }
+            }
+          }
+        }
+      });
     }
 
     // Render Cards in Grid

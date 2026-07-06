@@ -361,6 +361,74 @@ def update_news_json(article: dict, post_content: str, date_str: str, pocs: list
     except Exception as e:
         print(f"[ERROR] Failed to write news_data.json: {e}")
 
+def clean_for_linkedin(text: str) -> str:
+    """Removes standard markdown symbols to make it readable on LinkedIn."""
+    text = re.sub(r"\*\*(.*?)\*\*", r"\1", text)
+    text = re.sub(r"\*(.*?)\*", r"\1", text)
+    text = re.sub(r"\[(.*?)\]\((.*?)\)", r"\1 (\2)", text)
+    text = re.sub(r"^#+\s+(.*?)$", r"\1", text, flags=re.MULTILINE)
+    text = text.replace("`", "")
+    return text.strip()
+
+def post_to_linkedin(article: dict, category: str):
+    """Publishes a summary of the cybersecurity threat to LinkedIn, directing users to the dashboard."""
+    token = os.environ.get("LINKEDIN_ACCESS_TOKEN", "").strip()
+    person_urn = os.environ.get("LINKEDIN_PERSON_URN", "").strip()
+    
+    if not token or not person_urn:
+        print("[INFO] LinkedIn credentials (LINKEDIN_ACCESS_TOKEN or LINKEDIN_PERSON_URN) not found. Skipping LinkedIn cross-post.")
+        return
+        
+    print("[INFO] Publishing alert update to LinkedIn...")
+    title = article["title"]
+    summary = article["summary"]
+    source = article["source"]
+    
+    linkedin_text = f"""🚨 LATEST CYBERSECURITY ALERT: {title}
+
+Category: {category}
+Source: {source}
+
+📰 Quick Brief:
+{clean_for_linkedin(summary)}
+
+🛡️ Practical mitigations, CVE details, and hands-on skill-building labs to master this threat are available on my Threat Intel Dashboard:
+🔗 https://rajshevde-01.github.io/Daily-cyber-News-/
+
+#Cybersecurity #ThreatIntel #SecurityEngineering #ActiveDefense"""
+
+    url = "https://api.linkedin.com/rest/posts"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+        "LinkedIn-Version": "202601",
+        "X-Restli-Protocol-Version": "2.0.0",
+    }
+    
+    payload = {
+        "author": person_urn,
+        "commentary": linkedin_text,
+        "visibility": "PUBLIC",
+        "distribution": {
+            "feedDistribution": "MAIN_FEED",
+            "targetEntities": [],
+            "thirdPartyDistributionChannels": [],
+        },
+        "lifecycleState": "PUBLISHED",
+        "isReshareDisabledByAuthor": False,
+    }
+    
+    try:
+        response = requests.post(url, headers=headers, json=payload, timeout=15)
+        if response.status_code == 201:
+            post_id = response.headers.get("x-restli-id", "unknown")
+            print(f"[SUCCESS] Post successfully published to LinkedIn! ID: {post_id}")
+        else:
+            print(f"[WARN] Failed to post to LinkedIn. Status: {response.status_code}")
+            print(response.text)
+    except Exception as e:
+        print(f"[WARN] Error publishing to LinkedIn: {e}")
+
 def main():
     article = fetch_latest_news()
     if not article:
@@ -404,6 +472,13 @@ def main():
     
     # Update news_data.json
     update_news_json(article, post_content, date_str, pocs)
+    
+    # Cross-post to LinkedIn
+    category = "General Cyber Security"
+    cat_match = re.search(r"\*\*Category\*\*:\s*([^\n]+)", post_content)
+    if cat_match:
+        category = cat_match.group(1).strip()
+    post_to_linkedin(article, category)
 
 if __name__ == "__main__":
     main()
