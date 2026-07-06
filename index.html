@@ -239,7 +239,7 @@
 
     .search-wrapper {
       flex: 2;
-      min-width: 300px;
+      min-width: 250px;
       position: relative;
     }
 
@@ -274,8 +274,8 @@
     .filter-group {
       display: flex;
       gap: 0.75rem;
-      flex: 1;
-      min-width: 280px;
+      flex: 1.5;
+      min-width: 250px;
     }
 
     .filter-group select {
@@ -294,6 +294,43 @@
 
     .filter-group select:focus {
       border-color: var(--accent-gold);
+    }
+
+    /* Layout Switcher */
+    .layout-toggle-container {
+      display: flex;
+      gap: 0.35rem;
+      background: var(--bg-base);
+      border: 1px solid var(--border-dim);
+      border-radius: 8px;
+      padding: 0.25rem;
+    }
+
+    .layout-btn {
+      background: none;
+      border: none;
+      color: var(--text-sub);
+      padding: 0.5rem 0.8rem;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: var(--transition-smooth);
+      user-select: none;
+    }
+
+    .layout-btn.active {
+      background: var(--border-dim);
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .layout-btn:hover:not(.active) {
+      color: #fff;
     }
 
     /* Featured Threat (Hero Card) */
@@ -397,12 +434,65 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
       gap: 1.5rem;
+      transition: var(--transition-smooth);
     }
 
     @media (max-width: 480px) {
       .threat-grid {
         grid-template-columns: 1fr;
       }
+    }
+
+    /* List View Restyling */
+    .threat-grid.list-view {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .threat-grid.list-view .threat-card {
+      flex-direction: row;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      gap: 1.5rem;
+    }
+
+    .threat-grid.list-view .threat-card::after {
+      width: 3px;
+      height: 100%;
+    }
+
+    .threat-grid.list-view .threat-card .card-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 0;
+      width: 140px;
+      flex-shrink: 0;
+      gap: 0.25rem;
+    }
+
+    .threat-grid.list-view .threat-card .card-title {
+      margin-bottom: 0;
+      font-size: 1.05rem;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .threat-grid.list-view .threat-card .card-summary {
+      display: none;
+    }
+
+    .threat-grid.list-view .threat-card .card-footer {
+      margin-top: 0;
+      border-top: none;
+      padding-top: 0;
+      flex-shrink: 0;
+      gap: 1rem;
+      display: flex;
+      align-items: center;
     }
 
     /* Threat Cards */
@@ -516,10 +606,49 @@
       animation: alertGlow 2.5s infinite;
     }
 
+    .share-card-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition-smooth);
+      padding: 0.2rem;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    .share-card-btn:hover {
+      color: var(--accent-gold-hover);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
     @keyframes alertGlow {
       0% { opacity: 0.8; }
       50% { opacity: 1; border-color: rgba(245, 158, 11, 0.8); background: rgba(245, 158, 11, 0.05); }
       100% { opacity: 0.8; }
+    }
+
+    /* Search Highlighting */
+    mark.highlight {
+      background: rgba(217, 119, 6, 0.35);
+      color: #fff;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    /* Error and Empty States */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--bg-panel);
+      border: 1px dashed var(--border-dim);
+      border-radius: 12px;
+      color: var(--text-sub);
     }
 
     /* Premium Drawer Detail View */
@@ -594,15 +723,65 @@
       color: #fff;
     }
 
+    /* Drawer Tabs styling */
+    .drawer-tabs {
+      display: flex;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border-dim);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .drawer-tab {
+      flex: 1;
+      padding: 1rem;
+      text-align: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-sub);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: var(--transition-smooth);
+      user-select: none;
+    }
+
+    .drawer-tab:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.01);
+    }
+
+    .drawer-tab.active {
+      color: var(--text-gold);
+      border-bottom-color: var(--accent-gold);
+      background: rgba(217, 119, 6, 0.02);
+    }
+
     .drawer-content {
-      padding: 2rem;
       overflow-y: auto;
       flex: 1;
       font-size: 0.98rem;
       font-weight: 300;
+      padding: 0; /* padding shifted to drawer-tab-content */
     }
 
-    /* Markdown styling inside drawer */
+    .drawer-tab-content {
+      display: none;
+      padding: 2rem;
+    }
+
+    .drawer-tab-content.active {
+      display: block;
+      animation: tabFadeIn 0.3s ease;
+    }
+
+    @keyframes tabFadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Markdown styling inside drawer tab contents */
     .markdown-body h1 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.8rem;
@@ -615,7 +794,7 @@
     .markdown-body h2 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.3rem;
-      margin-top: 2.25rem;
+      margin-top: 1rem;
       margin-bottom: 1rem;
       color: var(--text-gold);
       border-bottom: 1px solid var(--border-dim);
@@ -681,6 +860,34 @@
       padding: 1rem;
       overflow-x: auto;
       line-height: 1.5;
+    }
+
+    /* Custom Notification Toast */
+    .notification-toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #0d1117;
+      border: 1px solid var(--accent-gold);
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      color: #fff;
+      font-size: 0.9rem;
+      font-family: 'Space Grotesk', sans-serif;
+      z-index: 2000;
+      opacity: 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      pointer-events: none;
+    }
+
+    .notification-toast.active {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
     }
   </style>
 </head>
@@ -748,18 +955,28 @@
             <option value="Dark Reading">Dark Reading</option>
             <option value="CISA Alert/Activity">CISA Alerts</option>
           </select>
+          
+          <!-- Layout Switcher Toggle -->
+          <div class="layout-toggle-container">
+            <button class="layout-btn active" id="btn-grid" onclick="setLayout('grid')" title="Switch to Grid View">
+              🔳 Grid
+            </button>
+            <button class="layout-btn" id="btn-list" onclick="setLayout('list')" title="Switch to List View">
+              ≡ List
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Featured Threat Hero Card -->
-    <div class="featured-section-title">⚡ Latest Threat Advisory</div>
+    <div class="featured-section-title" id="title-latest">⚡ Latest Threat Advisory</div>
     <div id="hero-container">
       <!-- Dynamic Hero Placement -->
     </div>
 
     <!-- Threats Grid -->
-    <div class="featured-section-title">📁 Threat intelligence History</div>
+    <div class="featured-section-title" id="title-history">📁 Threat intelligence History</div>
     <div class="threat-grid" id="threat-cards-container">
       <div class="empty-state">Loading threat feeds...</div>
     </div>
@@ -773,14 +990,34 @@
       <div class="drawer-title" id="drawer-cat-label">Threat Details</div>
       <button class="close-btn" id="close-drawer-btn">&times;</button>
     </div>
-    <div class="drawer-content markdown-body" id="drawer-body">
-      <!-- Dynamically Rendered Markdown Content -->
+    
+    <!-- Premium Drawer Tabs -->
+    <div class="drawer-tabs">
+      <div class="drawer-tab active" id="tab-btn-overview" onclick="switchTab('overview')">📰 Briefing</div>
+      <div class="drawer-tab" id="tab-btn-poc" onclick="switchTab('poc')">🎯 Exploits</div>
+      <div class="drawer-tab" id="tab-btn-mitigation" onclick="switchTab('mitigation')">🛠️ Defense</div>
+      <div class="drawer-tab" id="tab-btn-career" onclick="switchTab('career')">🧠 Lab & Skills</div>
     </div>
+    
+    <!-- Drawer Scrollable Content -->
+    <div class="drawer-content">
+      <div class="drawer-tab-content markdown-body active" id="tab-content-overview"></div>
+      <div class="drawer-tab-content markdown-body" id="tab-content-poc"></div>
+      <div class="drawer-tab-content markdown-body" id="tab-content-mitigation"></div>
+      <div class="drawer-tab-content markdown-body" id="tab-content-career"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="notification-toast" id="toast-notification">
+    <span>✅</span> <span id="toast-text">Link copied to clipboard!</span>
   </div>
 
   <script>
     let threatData = [];
     let myChart = null;
+    let currentLayout = 'grid';
+    let activeTab = 'overview';
 
     // Elements
     const heroContainer = document.getElementById('hero-container');
@@ -797,9 +1034,9 @@
     
     const overlay = document.getElementById('drawer-overlay');
     const drawer = document.getElementById('detail-drawer');
-    const drawerBody = document.getElementById('drawer-body');
-    const drawerCatLabel = document.getElementById('drawer-cat-label');
     const closeDrawerBtn = document.getElementById('close-drawer-btn');
+    const toast = document.getElementById('toast-notification');
+    const toastText = document.getElementById('toast-text');
 
     // Fetch and Initialize Data
     async function loadDashboardData() {
@@ -817,6 +1054,16 @@
         calculateMetrics(threatData);
         renderContent(threatData);
         renderAnalyticsChart(threatData);
+        
+        // Deep-linking routing check: ?date=YYYY-MM-DD
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetDate = urlParams.get('date');
+        if (targetDate) {
+          const matchedItem = threatData.find(item => item.date === targetDate);
+          if (matchedItem) {
+            setTimeout(() => openDetailDrawer(matchedItem), 300);
+          }
+        }
       } catch (err) {
         console.error('Error fetching data:', err);
         gridContainer.innerHTML = `
@@ -828,6 +1075,40 @@
           </div>
         `;
       }
+    }
+
+    // Toast Notification Trigger
+    function showToast(message) {
+      toastText.textContent = message;
+      toast.classList.add('active');
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 2500);
+    }
+
+    // Share Card (Copy deep link)
+    function shareCard(event, dateStr) {
+      event.stopPropagation(); // prevent opening the card drawer
+      
+      const baseUrl = window.location.origin + window.location.pathname;
+      const shareUrl = `${baseUrl}?date=${dateStr}`;
+      
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        showToast('Advisory deep-link copied to clipboard!');
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+        showToast('Failed to copy link.');
+      });
+    }
+
+    // Set Layout Grid vs List
+    function setLayout(layoutType) {
+      currentLayout = layoutType;
+      document.getElementById('btn-grid').classList.toggle('active', layoutType === 'grid');
+      document.getElementById('btn-list').classList.toggle('active', layoutType === 'list');
+      
+      gridContainer.classList.toggle('list-view', layoutType === 'list');
+      applyFilters();
     }
 
     // Calculate Dashboard Analytics
@@ -856,7 +1137,6 @@
         }
       }
       
-      // Shorten display name for metrics widget if needed
       const displayCategory = topCategory.replace(' Defense', '').replace(' Security', '');
       valVector.textContent = displayCategory;
     }
@@ -870,7 +1150,6 @@
         icon.textContent = '▲';
       } else {
         icon.textContent = '▼';
-        // Re-render chart to replay animations smoothly
         renderAnalyticsChart(threatData);
       }
     }
@@ -909,7 +1188,7 @@
           }]
         },
         options: {
-          indexAxis: 'y', // Horizontal Layout
+          indexAxis: 'y',
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
@@ -951,8 +1230,16 @@
       });
     }
 
+    // String search highlights
+    function highlightText(text, searchVal) {
+      if (!searchVal) return text;
+      const escaped = searchVal.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const regex = new RegExp(`(${escaped})`, 'gi');
+      return text.replace(regex, '<mark class="highlight">$1</mark>');
+    }
+
     // Render Hero Card and History Grid
-    function renderContent(data) {
+    function renderContent(data, searchVal = "") {
       heroContainer.innerHTML = '';
       gridContainer.innerHTML = '';
       
@@ -970,17 +1257,24 @@
       const heroCard = document.createElement('div');
       heroCard.className = 'hero-card';
       heroCard.addEventListener('click', () => openDetailDrawer(latestItem));
+      
+      const titleText = highlightText(latestItem.title, searchVal);
+      const summaryText = highlightText(latestItem.summary || 'Click to view the detailed threat investigation...', searchVal);
+
       heroCard.innerHTML = `
         <div class="hero-meta">
           <span class="hero-badge">${latestItem.category || 'General Security'}</span>
           <span class="hero-date">${latestItem.date}</span>
           ${heroPocBadge}
         </div>
-        <h2 class="hero-title">${latestItem.title}</h2>
-        <p class="hero-summary">${latestItem.summary || 'Click to view the detailed threat investigation...'}</p>
+        <h2 class="hero-title">${titleText}</h2>
+        <p class="hero-summary">${summaryText}</p>
         <div class="hero-footer">
           <span class="hero-source">Reported by: ${latestItem.source}</span>
-          <span style="color: var(--accent-gold-hover); font-size: 0.9rem; font-weight: 500;">Open Briefing &rarr;</span>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="share-card-btn" onclick="shareCard(event, '${latestItem.date}')" title="Copy link to this advisory">🔗 Share</button>
+            <span style="color: var(--accent-gold-hover); font-size: 0.9rem; font-weight: 500;">Open Briefing &rarr;</span>
+          </div>
         </div>
       `;
       heroContainer.appendChild(heroCard);
@@ -992,11 +1286,11 @@
         return;
       }
 
-      renderCards(historyData);
+      renderCards(historyData, searchVal);
     }
 
     // Render Cards in Grid
-    function renderCards(data) {
+    function renderCards(data, searchVal = "") {
       gridContainer.innerHTML = '';
       data.forEach((item) => {
         const card = document.createElement('div');
@@ -1006,19 +1300,24 @@
         const hasPoc = item.pocs && item.pocs.length > 0;
         const pocBadgeHtml = hasPoc ? `<span class="poc-badge">⚠️ Exploit PoC</span>` : '';
 
-        // Extract description teaser
         const summaryTeaser = item.summary || 'Click to view the detailed threat investigation...';
+
+        const titleText = highlightText(item.title, searchVal);
+        const summaryText = highlightText(summaryTeaser, searchVal);
 
         card.innerHTML = `
           <div class="card-meta">
             <span class="card-category">${item.category || 'General Security'}</span>
             <span class="card-date">${item.date}</span>
           </div>
-          <h2 class="card-title">${item.title}</h2>
-          <p class="card-summary">${summaryTeaser}</p>
+          <h2 class="card-title">${titleText}</h2>
+          <p class="card-summary">${summaryText}</p>
           <div class="card-footer">
             <span class="card-source">${item.source}</span>
-            ${pocBadgeHtml}
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <button class="share-card-btn" onclick="shareCard(event, '${item.date}')" title="Copy link to this advisory">🔗</button>
+              ${pocBadgeHtml}
+            </div>
           </div>
         `;
         gridContainer.appendChild(card);
@@ -1046,15 +1345,15 @@
       // When filtering, bypass Hero splitting and show all in grid
       if (searchVal || catVal || srcVal) {
         heroContainer.style.display = 'none';
-        document.querySelectorAll('.featured-section-title')[0].style.display = 'none';
-        document.querySelectorAll('.featured-section-title')[1].textContent = '🔍 Filter Results';
-        renderCards(filtered);
+        document.getElementById('title-latest').style.display = 'none';
+        document.getElementById('title-history').textContent = '🔍 Filter Results';
+        renderCards(filtered, searchVal);
       } else {
         // Reset to normal layout
         heroContainer.style.display = 'block';
-        document.querySelectorAll('.featured-section-title')[0].style.display = 'flex';
-        document.querySelectorAll('.featured-section-title')[1].textContent = '📁 Threat intelligence History';
-        renderContent(threatData);
+        document.getElementById('title-latest').style.display = 'flex';
+        document.getElementById('title-history').textContent = '📁 Threat intelligence History';
+        renderContent(threatData, "");
       }
     }
 
@@ -1065,11 +1364,85 @@
       };
     }
 
+    // Markdown content parsing to tabs
+    function parseMarkdownToTabs(content) {
+      // Regex patterns to isolate sections by markdown headers
+      const overviewRegex = /#\s+🚨[\s\S]*?(##\s+📰\s+Summary of the Threat([\s\S]*?))?(##\s+🛠️|##\s+🧠|##\s+🎯|---|$)/i;
+      const pocRegex = /(##\s+🎯\s+Public Exploit PoC Alert([\s\S]*?))(##\s+🛠️|##\s+🧠|---|$)/i;
+      const mitigationRegex = /(##\s+🛠️\s+Actionable Defense & Mitigation Checklist([\s\S]*?))(##\s+🧠|##\s+🎯|---|$)/i;
+      const careerRegex = /(##\s+🧠\s+Career & Skills Upgrade[\s\S]*?\(How to do better in the Security Field\)([\s\S]*?))(##\s+🛠️|##\s+🎯|---|$)/i;
+
+      let overview = "";
+      let pocs = "";
+      let mitigation = "";
+      let career = "";
+
+      const m1 = content.match(overviewRegex);
+      if (m1 && m1[2]) {
+        overview = m1[2].strip();
+      } else {
+        // Fallback: If layout doesn't match standard headers, place whole file in Overview
+        overview = content;
+      }
+
+      const m2 = content.match(pocRegex);
+      if (m2 && m2[2]) pocs = m2[2].strip();
+
+      const m3 = content.match(mitigationRegex);
+      if (m3 && m3[2]) mitigation = m3[2].strip();
+
+      const m4 = content.match(careerRegex);
+      if (m4 && m4[2]) career = m4[2].strip();
+
+      return { overview, pocs, mitigation, career };
+    }
+
+    // Switch Tabs inside Drawer
+    function switchTab(tabId) {
+      activeTab = tabId;
+      
+      // Update Tab Button States
+      document.querySelectorAll('.drawer-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.id === `tab-btn-${tabId}`);
+      });
+      
+      // Update Tab Content View
+      document.querySelectorAll('.drawer-tab-content').forEach(content => {
+        content.classList.toggle('active', content.id === `tab-content-${tabId}`);
+      });
+    }
+
     // Drawer Controls
     function openDetailDrawer(item) {
       drawerCatLabel.textContent = item.category || 'Threat Briefing';
-      // Use marked.js to render the markdown description
-      drawerBody.innerHTML = marked.parse(item.content);
+      
+      // Parse markdown contents into tabs
+      const parsed = parseMarkdownToTabs(item.content);
+      
+      // Set Tab Contents using marked.js
+      document.getElementById('tab-content-overview').innerHTML = marked.parse(parsed.overview || "_No overview briefing parsed._");
+      document.getElementById('tab-content-mitigation').innerHTML = marked.parse(parsed.mitigation || "_No mitigation checklists parsed._");
+      document.getElementById('tab-content-career').innerHTML = marked.parse(parsed.career || "_No career skill labs parsed._");
+      
+      // Handle optional PoC tab
+      const pocTabBtn = document.getElementById('tab-btn-poc');
+      if (parsed.pocs || (item.pocs && item.pocs.length > 0)) {
+        pocTabBtn.style.display = 'block';
+        let pocMarkdown = parsed.pocs;
+        if (!pocMarkdown && item.pocs) {
+          const pocList = item.pocs.map(p => `- **[${p.name}](${p.url})** (⭐ ${p.stars}): ${p.description}`).join('\n');
+          pocMarkdown = `### Mapped Public Exploits on GitHub:\n${pocList}`;
+        }
+        document.getElementById('tab-content-poc').innerHTML = marked.parse(pocMarkdown);
+      } else {
+        pocTabBtn.style.display = 'none';
+        if (activeTab === 'poc') {
+          switchTab('overview');
+        }
+      }
+      
+      // Default to overview tab on open
+      switchTab('overview');
       
       overlay.classList.add('active');
       drawer.style.transform = 'translateX(-650px)';
@@ -1078,6 +1451,11 @@
     function closeDetailDrawer() {
       overlay.classList.remove('active');
       drawer.style.transform = 'translateX(0)';
+      
+      // Clear URL parameter so reloading doesn't auto-open it
+      const url = new URL(window.location);
+      url.searchParams.delete('date');
+      window.history.pushState({}, '', url);
     }
 
     // Listeners
