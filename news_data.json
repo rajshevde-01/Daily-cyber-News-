@@ -1,5 +1,14 @@
 [
   {
+    "title": "Nearly 22,000 Microsoft Exchange servers vulnerable to hijack attacks",
+    "source": "BleepingComputer",
+    "link": "https://www.bleepingcomputer.com/news/security/nearly-22-000-microsoft-exchange-servers-vulnerable-to-hijack-attacks/",
+    "date": "2026-09-01",
+    "category": "Vulnerability Management & Exploitation",
+    "content": "# 🚨 Nearly 22,000 Microsoft Exchange servers vulnerable to hijack attacks\n\n**Source**: BleepingComputer\n**Link**: https://www.bleepingcomputer.com/news/security/nearly-22-000-microsoft-exchange-servers-vulnerable-to-hijack-attacks/\n**Date**: 2026-09-01\n**Category**: Vulnerability Management & Exploitation\n\n## 📰 Summary of the Threat\nNearly 22,000 Microsoft Exchange servers exposed online remain unpatched against a high-severity authentication bypass vulnerability that allows attackers to hijack all user mailboxes. [...]\n\nThis vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.\n\n## 🛠️ Actionable Defense & Mitigation Checklist\n- [ ] **Step 1**: Perform an asset discovery scan to map out all servers running the affected software version.\n- [ ] **Step 2**: Apply the official vendor patch immediately. If a patch is unavailable, restrict inbound network access to the affected service.\n- [ ] **Step 3**: Apply virtual patching signatures on your Web Application Firewall (WAF) or IPS/IDS systems.\n- [ ] **Step 4**: Search centralized logs (SIEM) for exploit payload signatures or anomalous connection requests targeted at the service path.\n\n## 🧠 Career & Skills Upgrade (How to do better in the Security Field)\n**Skills to Practice:** Learn to write basic Proof of Concept (PoC) exploit scripts in Python to understand vulnerability mechanics at the packet/HTTP request level. Study security advisories from CISA, CVE, and NIST.\n\n**Labs to Build:** Set up a Docker container running a legacy, vulnerable version of software. Run vulnerability scanners like Nuclei or OpenVAS against it to see how they detect the flaw, and use Wireshark to capture and analyze the exploit traffic.\n\n---\n*Disclaimer: This post was automatically generated to track daily security events and share defensive insights.*\n",
+    "pocs": []
+  },
+  {
     "title": "Chinese Fire Ant hackers turn Cisco routers into spying platforms",
     "source": "BleepingComputer",
     "link": "https://www.bleepingcomputer.com/news/security/chinese-fire-ant-hackers-turn-cisco-routers-into-spying-platforms/",
@@ -124,21 +133,5 @@
     "category": "General Cyber Security & Hardening",
     "content": "# 🚨 Microsoft confirms outage affecting search in Microsoft 365 apps\n\n**Source**: BleepingComputer\n**Link**: https://www.bleepingcomputer.com/news/microsoft/microsoft-working-to-fix-bug-behind-microsoft-365-search-issues/\n**Date**: 2026-08-18\n**Category**: General Cyber Security & Hardening\n\n## 📰 Summary of the Threat\nMicrosoft says some users are experiencing issues searching in Microsoft 365 apps, including Outlook on the web, Outlook desktop, SharePoint Online, and OneDrive. [...]\n\nThis vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.\n\n## 🛠️ Actionable Defense & Mitigation Checklist\n- [ ] **Step 1**: Implement network segmentation to separate critical internal business databases from general user zones.\n- [ ] **Step 2**: Ensure centralized logging is active for all endpoint, firewall, and authentication events.\n- [ ] **Step 3**: Establish a regular patch schedule for all operating systems, hypervisors, and core applications.\n- [ ] **Step 4**: Maintain a documented Incident Response plan and run bi-annual tabletop simulations with key stakeholders.\n\n## 🧠 Career & Skills Upgrade (How to do better in the Security Field)\n**Skills to Practice:** Learn to read and parse raw system logs using basic command-line tools like grep, awk, sed, and jq. Familiarize yourself with the MITRE ATT&CK framework to map real-world adversary techniques to enterprise log sources.\n\n**Labs to Build:** Install Wazuh (open-source HIDS/SIEM) or an Elastic Stack on a local virtual machine. Configure it to ingest logs from your main desktop, trigger a test alert, and write a detection rule to catch it.\n\n---\n*Disclaimer: This post was automatically generated to track daily security events and share defensive insights.*\n",
     "pocs": []
-  },
-  {
-    "title": "Microsoft working on Defender patch for ShieldBreak zero-day",
-    "source": "BleepingComputer",
-    "link": "https://www.bleepingcomputer.com/news/security/microsoft-working-on-defender-patch-for-shieldbreak-zero-day/",
-    "date": "2026-08-17",
-    "category": "Vulnerability Management & Exploitation",
-    "content": "# 🚨 Microsoft working on Defender patch for ShieldBreak zero-day\n\n**Source**: BleepingComputer\n**Link**: https://www.bleepingcomputer.com/news/security/microsoft-working-on-defender-patch-for-shieldbreak-zero-day/\n**Date**: 2026-08-17\n**Category**: Vulnerability Management & Exploitation\n\n## 📰 Summary of the Threat\nMicrosoft is working on a security patch for the \"ShieldBreak\" zero-day vulnerability disclosed last week by security researcher \"Nightmare Eclipse\" and now tracked as CVE-2026-69414. [...]\n\nThis vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.\n\n## 🎯 Public Exploit PoC Alert\nWe detected active public Proof-of-Concept exploits for **CVE-2026-69414** on GitHub:\n- **[HORKimhab/CVE-2026-50656](https://github.com/HORKimhab/CVE-2026-50656)** (⭐ 0): CVE-2026-50656, CVE-2026-69414\n\n## 🛠️ Actionable Defense & Mitigation Checklist\n- [ ] **Step 1**: Perform an asset discovery scan to map out all servers running the affected software version.\n- [ ] **Step 2**: Apply the official vendor patch immediately. If a patch is unavailable, restrict inbound network access to the affected service.\n- [ ] **Step 3**: Apply virtual patching signatures on your Web Application Firewall (WAF) or IPS/IDS systems.\n- [ ] **Step 4**: Search centralized logs (SIEM) for exploit payload signatures or anomalous connection requests targeted at the service path.\n\n## 🧠 Career & Skills Upgrade (How to do better in the Security Field)\n**Skills to Practice:** Learn to write basic Proof of Concept (PoC) exploit scripts in Python to understand vulnerability mechanics at the packet/HTTP request level. Study security advisories from CISA, CVE, and NIST.\n\n**Labs to Build:** Set up a Docker container running a legacy, vulnerable version of software. Run vulnerability scanners like Nuclei or OpenVAS against it to see how they detect the flaw, and use Wireshark to capture and analyze the exploit traffic.\n\n---\n*Disclaimer: This post was automatically generated to track daily security events and share defensive insights.*\n",
-    "pocs": [
-      {
-        "name": "HORKimhab/CVE-2026-50656",
-        "url": "https://github.com/HORKimhab/CVE-2026-50656",
-        "description": "CVE-2026-50656, CVE-2026-69414",
-        "stars": 0
-      }
-    ]
   }
 ]
