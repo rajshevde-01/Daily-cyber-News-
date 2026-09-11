@@ -1,5 +1,21 @@
 [
   {
+    "title": "GitLab urges users to patch max severity path traversal flaw",
+    "source": "BleepingComputer",
+    "link": "https://www.bleepingcomputer.com/news/security/gitlab-urges-users-to-patch-max-severity-path-traversal-flaw/",
+    "date": "2026-09-11",
+    "category": "Vulnerability Management & Exploitation",
+    "content": "# 🚨 GitLab urges users to patch max severity path traversal flaw\n\n**Source**: BleepingComputer\n**Link**: https://www.bleepingcomputer.com/news/security/gitlab-urges-users-to-patch-max-severity-path-traversal-flaw/\n**Date**: 2026-09-11\n**Category**: Vulnerability Management & Exploitation\n\n## 📰 Summary of the Threat\nGitLab urged users on Thursday to patch their servers immediately against a maximum-severity path traversal vulnerability tracked as CVE-2026-85706. [...]\n\nThis vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.\n\n## 🎯 Public Exploit PoC Alert\nWe detected active public Proof-of-Concept exploits for **CVE-2026-85706** on GitHub:\n- **[FlowerWitch/CVE-2026-85706_docker_exp](https://github.com/FlowerWitch/CVE-2026-85706_docker_exp)** (⭐ 0): CVE-2026-85706_docker_exp\n\n## 🛠️ Actionable Defense & Mitigation Checklist\n- [ ] **Step 1**: Perform an asset discovery scan to map out all servers running the affected software version.\n- [ ] **Step 2**: Apply the official vendor patch immediately. If a patch is unavailable, restrict inbound network access to the affected service.\n- [ ] **Step 3**: Apply virtual patching signatures on your Web Application Firewall (WAF) or IPS/IDS systems.\n- [ ] **Step 4**: Search centralized logs (SIEM) for exploit payload signatures or anomalous connection requests targeted at the service path.\n\n## 🧠 Career & Skills Upgrade (How to do better in the Security Field)\n**Skills to Practice:** Learn to write basic Proof of Concept (PoC) exploit scripts in Python to understand vulnerability mechanics at the packet/HTTP request level. Study security advisories from CISA, CVE, and NIST.\n\n**Labs to Build:** Set up a Docker container running a legacy, vulnerable version of software. Run vulnerability scanners like Nuclei or OpenVAS against it to see how they detect the flaw, and use Wireshark to capture and analyze the exploit traffic.\n\n---\n*Disclaimer: This post was automatically generated to track daily security events and share defensive insights.*\n",
+    "pocs": [
+      {
+        "name": "FlowerWitch/CVE-2026-85706_docker_exp",
+        "url": "https://github.com/FlowerWitch/CVE-2026-85706_docker_exp",
+        "description": "CVE-2026-85706_docker_exp",
+        "stars": 0
+      }
+    ]
+  },
+  {
     "title": "Microsoft says September updates fix mouse settings reset issues",
     "source": "BleepingComputer",
     "link": "https://www.bleepingcomputer.com/news/microsoft/microsoft-resolves-mouse-settings-reset-bug-windows-11-update/",
@@ -123,15 +139,6 @@
     "date": "2026-08-28",
     "category": "Vulnerability Management & Exploitation",
     "content": "# 🚨 PaperCut releases second emergency patch for exploited flaws\n\n**Source**: BleepingComputer\n**Link**: https://www.bleepingcomputer.com/news/security/papercut-releases-second-emergency-patch-for-exploited-flaws/\n**Date**: 2026-08-28\n**Category**: Vulnerability Management & Exploitation\n\n## 📰 Summary of the Threat\nPaperCut has released a second emergency security update for two actively exploited vulnerabilities in its PaperCut NG and MF print management software after researchers discovered multiple ways to bypass the initial fixes. [...]\n\nThis vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.\n\n## 🛠️ Actionable Defense & Mitigation Checklist\n- [ ] **Step 1**: Perform an asset discovery scan to map out all servers running the affected software version.\n- [ ] **Step 2**: Apply the official vendor patch immediately. If a patch is unavailable, restrict inbound network access to the affected service.\n- [ ] **Step 3**: Apply virtual patching signatures on your Web Application Firewall (WAF) or IPS/IDS systems.\n- [ ] **Step 4**: Search centralized logs (SIEM) for exploit payload signatures or anomalous connection requests targeted at the service path.\n\n## 🧠 Career & Skills Upgrade (How to do better in the Security Field)\n**Skills to Practice:** Learn to write basic Proof of Concept (PoC) exploit scripts in Python to understand vulnerability mechanics at the packet/HTTP request level. Study security advisories from CISA, CVE, and NIST.\n\n**Labs to Build:** Set up a Docker container running a legacy, vulnerable version of software. Run vulnerability scanners like Nuclei or OpenVAS against it to see how they detect the flaw, and use Wireshark to capture and analyze the exploit traffic.\n\n---\n*Disclaimer: This post was automatically generated to track daily security events and share defensive insights.*\n",
-    "pocs": []
-  },
-  {
-    "title": "PaperCut warns of NG, MF flaw exploited in zero-day attacks",
-    "source": "BleepingComputer",
-    "link": "https://www.bleepingcomputer.com/news/security/papercut-warns-of-ng-mf-flaw-exploited-in-zero-day-attacks/",
-    "date": "2026-08-27",
-    "category": "Vulnerability Management & Exploitation",
-    "content": "# 🚨 PaperCut warns of NG, MF flaw exploited in zero-day attacks\n\n**Source**: BleepingComputer\n**Link**: https://www.bleepingcomputer.com/news/security/papercut-warns-of-ng-mf-flaw-exploited-in-zero-day-attacks/\n**Date**: 2026-08-27\n**Category**: Vulnerability Management & Exploitation\n\n## 📰 Summary of the Threat\nPaperCut is warning that hackers are actively exploiting a vulnerability in all versions of its PaperCut NG and PaperCut MF print management software in zero-day attacks. [...]\n\nThis vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.\n\n## 🛠️ Actionable Defense & Mitigation Checklist\n- [ ] **Step 1**: Perform an asset discovery scan to map out all servers running the affected software version.\n- [ ] **Step 2**: Apply the official vendor patch immediately. If a patch is unavailable, restrict inbound network access to the affected service.\n- [ ] **Step 3**: Apply virtual patching signatures on your Web Application Firewall (WAF) or IPS/IDS systems.\n- [ ] **Step 4**: Search centralized logs (SIEM) for exploit payload signatures or anomalous connection requests targeted at the service path.\n\n## 🧠 Career & Skills Upgrade (How to do better in the Security Field)\n**Skills to Practice:** Learn to write basic Proof of Concept (PoC) exploit scripts in Python to understand vulnerability mechanics at the packet/HTTP request level. Study security advisories from CISA, CVE, and NIST.\n\n**Labs to Build:** Set up a Docker container running a legacy, vulnerable version of software. Run vulnerability scanners like Nuclei or OpenVAS against it to see how they detect the flaw, and use Wireshark to capture and analyze the exploit traffic.\n\n---\n*Disclaimer: This post was automatically generated to track daily security events and share defensive insights.*\n",
     "pocs": []
   }
 ]
