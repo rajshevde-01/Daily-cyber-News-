@@ -6,10 +6,10 @@ By running under your Git identity, this system automatically maintains your Git
 
 <!-- CYBER_ALERT_START -->
 > [!WARNING]
-> **Latest Cybersecurity Alert (2026-09-30):**
-> **[Cisco warns of new SD-WAN zero-day exploited in attacks](https://www.bleepingcomputer.com/news/security/cisco-warns-of-new-sd-wan-authentication-bypass-zero-day-exploited-in-attacks/)** (Source: *BleepingComputer*)
+> **Latest Cybersecurity Alert (2026-10-01):**
+> **[Police dismantle KillSec ransomware gang allegedly led by 16-year-old](https://www.bleepingcomputer.com/news/security/police-dismantle-killsec-ransomware-gang-allegedly-led-by-16-year-old/)** (Source: *BleepingComputer*)
 >
-> A detailed breakdown, including security engineering mitigation steps and career skill-building exercises, has been posted in [news/2026-09-30-news.md](news/2026-09-30-news.md). Check the [Threat Intel Dashboard](index.html) for interactive updates!
+> A detailed breakdown, including security engineering mitigation steps and career skill-building exercises, has been posted in [news/2026-10-01-news.md](news/2026-10-01-news.md). Check the [Threat Intel Dashboard](index.html) for interactive updates!
 <!-- CYBER_ALERT_END -->
 
 ## 🚀 How It Works
