@@ -1,5 +1,27 @@
 [
   {
+    "title": "PHP ships emergency patches for critical PHP2Shell flaws",
+    "source": "BleepingComputer",
+    "link": "https://www.bleepingcomputer.com/news/security/php-ships-emergency-patches-for-critical-php2shell-flaws/",
+    "date": "2026-10-21",
+    "category": "Vulnerability Management & Exploitation",
+    "content": "# 🚨 PHP ships emergency patches for critical PHP2Shell flaws\n\n**Source**: BleepingComputer\n**Link**: https://www.bleepingcomputer.com/news/security/php-ships-emergency-patches-for-critical-php2shell-flaws/\n**Date**: 2026-10-21\n**Category**: Vulnerability Management & Exploitation\n\n## 📰 Summary of the Threat\nThe PHP security team released emergency security patches for two critical remote code execution (RCE) vulnerabilities (CVE-2026-109618 and CVE-2026-109619) tracked collectively as PHP2Shell. [...]\n\nThis vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.\n\n## 🎯 Public Exploit PoC Alert\nWe detected active public Proof-of-Concept exploits for **CVE-2026-109618** on GitHub:\n- **[ikow/php2shell-poc](https://github.com/ikow/php2shell-poc)** (⭐ 401): CVE-2026-109618/109619 PHP session.upload_progress Exploit Research — POC & Analysis\n- **[eness/php2shell-CVE-2026-109618-CVE-2026-109619-PoC](https://github.com/eness/php2shell-CVE-2026-109618-CVE-2026-109619-PoC)** (⭐ 170): Proof-of-Concept (PoC) exploit for php2shell (CVE-2026-109618 / CVE-2026-109619), demonstrating remote code execution in vulnerable PHP environments. For security research and educational purposes only.\n\n## 🛠️ Actionable Defense & Mitigation Checklist\n- [ ] **Step 1**: Perform an asset discovery scan to map out all servers running the affected software version.\n- [ ] **Step 2**: Apply the official vendor patch immediately. If a patch is unavailable, restrict inbound network access to the affected service.\n- [ ] **Step 3**: Apply virtual patching signatures on your Web Application Firewall (WAF) or IPS/IDS systems.\n- [ ] **Step 4**: Search centralized logs (SIEM) for exploit payload signatures or anomalous connection requests targeted at the service path.\n\n## 🧠 Career & Skills Upgrade (How to do better in the Security Field)\n**Skills to Practice:** Learn to write basic Proof of Concept (PoC) exploit scripts in Python to understand vulnerability mechanics at the packet/HTTP request level. Study security advisories from CISA, CVE, and NIST.\n\n**Labs to Build:** Set up a Docker container running a legacy, vulnerable version of software. Run vulnerability scanners like Nuclei or OpenVAS against it to see how they detect the flaw, and use Wireshark to capture and analyze the exploit traffic.\n\n---\n*Disclaimer: This post was automatically generated to track daily security events and share defensive insights.*\n",
+    "pocs": [
+      {
+        "name": "ikow/php2shell-poc",
+        "url": "https://github.com/ikow/php2shell-poc",
+        "description": "CVE-2026-109618/109619 PHP session.upload_progress Exploit Research — POC & Analysis",
+        "stars": 401
+      },
+      {
+        "name": "eness/php2shell-CVE-2026-109618-CVE-2026-109619-PoC",
+        "url": "https://github.com/eness/php2shell-CVE-2026-109618-CVE-2026-109619-PoC",
+        "description": "Proof-of-Concept (PoC) exploit for php2shell (CVE-2026-109618 / CVE-2026-109619), demonstrating remote code execution in vulnerable PHP environments. For security research and educational purposes only.",
+        "stars": 170
+      }
+    ]
+  },
+  {
     "title": "CJIS v6.1 Compliance: 5 Practical Priorities for Agencies",
     "source": "BleepingComputer",
     "link": "https://www.bleepingcomputer.com/news/security/cjis-v61-compliance-5-practical-priorities-for-agencies/",
@@ -123,15 +145,6 @@
     "date": "2026-10-07",
     "category": "General Cyber Security & Hardening",
     "content": "# 🚨 Microsoft Outlook to block MSIX attachments starting November\n\n**Source**: BleepingComputer\n**Link**: https://www.bleepingcomputer.com/news/microsoft/microsoft-outlook-to-block-msix-attachments-used-in-attacks/\n**Date**: 2026-10-07\n**Category**: General Cyber Security & Hardening\n\n## 📰 Summary of the Threat\nMicrosoft announced that it will add .msix and .msixbundle attachments to the list of blocked attachments in Outlook Web and the new Outlook Windows client starting next month. [...]\n\nThis vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.\n\n## 🛠️ Actionable Defense & Mitigation Checklist\n- [ ] **Step 1**: Implement network segmentation to separate critical internal business databases from general user zones.\n- [ ] **Step 2**: Ensure centralized logging is active for all endpoint, firewall, and authentication events.\n- [ ] **Step 3**: Establish a regular patch schedule for all operating systems, hypervisors, and core applications.\n- [ ] **Step 4**: Maintain a documented Incident Response plan and run bi-annual tabletop simulations with key stakeholders.\n\n## 🧠 Career & Skills Upgrade (How to do better in the Security Field)\n**Skills to Practice:** Learn to read and parse raw system logs using basic command-line tools like grep, awk, sed, and jq. Familiarize yourself with the MITRE ATT&CK framework to map real-world adversary techniques to enterprise log sources.\n\n**Labs to Build:** Install Wazuh (open-source HIDS/SIEM) or an Elastic Stack on a local virtual machine. Configure it to ingest logs from your main desktop, trigger a test alert, and write a detection rule to catch it.\n\n---\n*Disclaimer: This post was automatically generated to track daily security events and share defensive insights.*\n",
-    "pocs": []
-  },
-  {
-    "title": "Fake ChatGPT, Gemini Sites steal advertising accounts, MFA codes",
-    "source": "BleepingComputer",
-    "link": "https://www.bleepingcomputer.com/news/security/fake-chatgpt-gemini-sites-steal-advertising-accounts-mfa-codes/",
-    "date": "2026-10-06",
-    "category": "Social Engineering & Identity Security",
-    "content": "# 🚨 Fake ChatGPT, Gemini Sites steal advertising accounts, MFA codes\n\n**Source**: BleepingComputer\n**Link**: https://www.bleepingcomputer.com/news/security/fake-chatgpt-gemini-sites-steal-advertising-accounts-mfa-codes/\n**Date**: 2026-10-06\n**Category**: Social Engineering & Identity Security\n\n## 📰 Summary of the Threat\nA new campaign targeting ad account managers uses fake ChatGPT, Gemini, Claude, and Perplexity sites that steal login credentials and multi-factor authentication (MFA) codes through browser-in-browser attacks. [...]\n\nThis vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.\n\n## 🛠️ Actionable Defense & Mitigation Checklist\n- [ ] **Step 1**: Enforce FIDO2/WebAuthn-based hardware security keys to immunize your organization against adversary-in-the-middle (AiTM) phishing.\n- [ ] **Step 2**: Enable strict email authentication records, including SPF, DKIM, and DMARC (with 'reject' policy) to prevent domain spoofing.\n- [ ] **Step 3**: Deploy modern email security gateways (SEGs) with link-rewriting and attachment sandboxing features.\n- [ ] **Step 4**: Train employees to verify high-risk out-of-band requests (like wiring funds or changing MFA devices) via trusted secondary channels.\n\n## 🧠 Career & Skills Upgrade (How to do better in the Security Field)\n**Skills to Practice:** Master parsing raw MIME email headers. Practice identifying email routing paths, SPF/DKIM alignment failures, and analyzing obfuscated links or macro-enabled attachments in a safe, isolated analysis environment.\n\n**Labs to Build:** Set up a private virtual lab and deploy open-source phishing simulation frameworks like GoPhish. Additionally, study how tools like Evilginx capture session tokens to understand how to design compensating session-revocation controls.\n\n---\n*Disclaimer: This post was automatically generated to track daily security events and share defensive insights.*\n",
     "pocs": []
   }
 ]
