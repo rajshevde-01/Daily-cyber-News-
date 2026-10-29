@@ -6,10 +6,10 @@ By running under your Git identity, this system automatically maintains your Git
 
 <!-- CYBER_ALERT_START -->
 > [!WARNING]
-> **Latest Cybersecurity Alert (2026-10-28):**
-> **[Microsoft urges Entra ID admins to migrate users to passkeys](https://www.bleepingcomputer.com/news/microsoft/microsoft-reminds-entra-id-admins-to-migrate-users-to-passkeys/)** (Source: *BleepingComputer*)
+> **Latest Cybersecurity Alert (2026-10-29):**
+> **[Microsoft fixes Remote Desktop failures caused by recent Windows updates](https://www.bleepingcomputer.com/news/microsoft/microsoft-fixes-remote-desktop-failures-caused-by-recent-windows-updates/)** (Source: *BleepingComputer*)
 >
-> A detailed breakdown, including security engineering mitigation steps and career skill-building exercises, has been posted in [news/2026-10-28-news.md](news/2026-10-28-news.md). Check the [Threat Intel Dashboard](index.html) for interactive updates!
+> A detailed breakdown, including security engineering mitigation steps and career skill-building exercises, has been posted in [news/2026-10-29-news.md](news/2026-10-29-news.md). Check the [Threat Intel Dashboard](index.html) for interactive updates!
 <!-- CYBER_ALERT_END -->
 
 ## 🚀 How It Works
