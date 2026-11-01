@@ -6,10 +6,10 @@ By running under your Git identity, this system automatically maintains your Git
 
 <!-- CYBER_ALERT_START -->
 > [!WARNING]
-> **Latest Cybersecurity Alert (2026-10-31):**
-> **[Reddit to lock content behind logins to fight scrapers](https://www.bleepingcomputer.com/news/security/reddit-to-lock-content-behind-logins-to-fight-scrapers/)** (Source: *BleepingComputer*)
+> **Latest Cybersecurity Alert (2026-11-01):**
+> **[Alpine Linux rebuilds GitLab after attempted RCE attack](https://www.bleepingcomputer.com/news/security/alpine-linux-rebuilds-gitlab-after-attempted-rce-attack/)** (Source: *BleepingComputer*)
 >
-> A detailed breakdown, including security engineering mitigation steps and career skill-building exercises, has been posted in [news/2026-10-31-news.md](news/2026-10-31-news.md). Check the [Threat Intel Dashboard](index.html) for interactive updates!
+> A detailed breakdown, including security engineering mitigation steps and career skill-building exercises, has been posted in [news/2026-11-01-news.md](news/2026-11-01-news.md). Check the [Threat Intel Dashboard](index.html) for interactive updates!
 <!-- CYBER_ALERT_END -->
 
 ## 🚀 How It Works
