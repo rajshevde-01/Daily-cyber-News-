@@ -1,5 +1,14 @@
 [
   {
+    "title": "mSecure password manager hack prompts password reset warnings",
+    "source": "BleepingComputer",
+    "link": "https://www.bleepingcomputer.com/news/security/msecure-password-manager-hack-prompts-password-reset-warnings/",
+    "date": "2026-11-04",
+    "category": "Ransomware & Malware Defense",
+    "content": "# 🚨 mSecure password manager hack prompts password reset warnings\n\n**Source**: BleepingComputer\n**Link**: https://www.bleepingcomputer.com/news/security/msecure-password-manager-hack-prompts-password-reset-warnings/\n**Date**: 2026-11-04\n**Category**: Ransomware & Malware Defense\n\n## 📰 Summary of the Threat\nmSeven Software is warning current and former mSecure password manager customers to change passwords, reset two-factor authentication, and remove passkeys following a cyberattack that reportedly exposed an encrypted customer database. [...]\n\nThis vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.\n\n## 🛠️ Actionable Defense & Mitigation Checklist\n- [ ] **Step 1**: Disable exposed remote access endpoints (like RDP) or secure them behind a strict Zero-Trust VPN/boundary.\n- [ ] **Step 2**: Enforce Multi-Factor Authentication (MFA) across all administrative and user portals without exceptions.\n- [ ] **Step 3**: Establish an offline, immutable backup infrastructure and verify restoration workflows weekly.\n- [ ] **Step 4**: Deploy Endpoint Detection and Response (EDR) agents to actively monitor and block unauthorized volume shadow copy deletion or mass file encryption.\n\n## 🧠 Career & Skills Upgrade (How to do better in the Security Field)\n**Skills to Practice:** Study ransomware loaders and practice writing YARA rules to detect common tools like Cobalt Strike or Silver. Learn to analyze Windows Event Logs for Event ID 1102 (audit log cleared) or Event ID 4624 (successful login type 10 for RDP).\n\n**Labs to Build:** Set up a virtualized Active Directory forest in a closed sandbox. Use tools like PingCastle or BloodHound to audit it, identify misconfigurations, and learn how ransomware groups perform internal reconnaissance and privilege escalation.\n\n---\n*Disclaimer: This post was automatically generated to track daily security events and share defensive insights.*\n",
+    "pocs": []
+  },
+  {
     "title": "Barracuda warns of critical flaws allowing root access to devices",
     "source": "BleepingComputer",
     "link": "https://www.bleepingcomputer.com/news/security/barracuda-warns-of-critical-flaws-allowing-root-access-to-devices/",
@@ -137,14 +146,5 @@
         "stars": 170
       }
     ]
-  },
-  {
-    "title": "CJIS v6.1 Compliance: 5 Practical Priorities for Agencies",
-    "source": "BleepingComputer",
-    "link": "https://www.bleepingcomputer.com/news/security/cjis-v61-compliance-5-practical-priorities-for-agencies/",
-    "date": "2026-10-20",
-    "category": "General Cyber Security & Hardening",
-    "content": "# 🚨 CJIS v6.1 Compliance: 5 Practical Priorities for Agencies\n\n**Source**: BleepingComputer\n**Link**: https://www.bleepingcomputer.com/news/security/cjis-v61-compliance-5-practical-priorities-for-agencies/\n**Date**: 2026-10-20\n**Category**: General Cyber Security & Hardening\n\n## 📰 Summary of the Threat\nCJIS v6.1 requires agencies to maintain strong authentication, account security, and audit controls while demonstrating ongoing compliance. Specops outlines five practical priorities covering MFA, account management, passwords, logging, and audit readiness. [...]\n\nThis vulnerability or active incident represents a significant risk vector. Organizations must review their exposure and verify that mitigating controls are functional.\n\n## 🛠️ Actionable Defense & Mitigation Checklist\n- [ ] **Step 1**: Implement network segmentation to separate critical internal business databases from general user zones.\n- [ ] **Step 2**: Ensure centralized logging is active for all endpoint, firewall, and authentication events.\n- [ ] **Step 3**: Establish a regular patch schedule for all operating systems, hypervisors, and core applications.\n- [ ] **Step 4**: Maintain a documented Incident Response plan and run bi-annual tabletop simulations with key stakeholders.\n\n## 🧠 Career & Skills Upgrade (How to do better in the Security Field)\n**Skills to Practice:** Learn to read and parse raw system logs using basic command-line tools like grep, awk, sed, and jq. Familiarize yourself with the MITRE ATT&CK framework to map real-world adversary techniques to enterprise log sources.\n\n**Labs to Build:** Install Wazuh (open-source HIDS/SIEM) or an Elastic Stack on a local virtual machine. Configure it to ingest logs from your main desktop, trigger a test alert, and write a detection rule to catch it.\n\n---\n*Disclaimer: This post was automatically generated to track daily security events and share defensive insights.*\n",
-    "pocs": []
   }
 ]
