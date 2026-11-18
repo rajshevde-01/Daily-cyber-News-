@@ -6,10 +6,10 @@ By running under your Git identity, this system automatically maintains your Git
 
 <!-- CYBER_ALERT_START -->
 > [!WARNING]
-> **Latest Cybersecurity Alert (2026-11-17):**
-> **[Tor releases emergency update amid ongoing DDoS attack](https://www.bleepingcomputer.com/news/security/tor-releases-emergency-update-amid-ongoing-ddos-attack/)** (Source: *BleepingComputer*)
+> **Latest Cybersecurity Alert (2026-11-18):**
+> **[Microsoft’s Agent Framework PyPI package compromised to steal credentials](https://www.bleepingcomputer.com/news/security/microsofts-agent-framework-pypi-package-compromised-to-steal-credentials/)** (Source: *BleepingComputer*)
 >
-> A detailed breakdown, including security engineering mitigation steps and career skill-building exercises, has been posted in [news/2026-11-17-news.md](news/2026-11-17-news.md). Check the [Threat Intel Dashboard](index.html) for interactive updates!
+> A detailed breakdown, including security engineering mitigation steps and career skill-building exercises, has been posted in [news/2026-11-18-news.md](news/2026-11-18-news.md). Check the [Threat Intel Dashboard](index.html) for interactive updates!
 <!-- CYBER_ALERT_END -->
 
 ## 🚀 How It Works
